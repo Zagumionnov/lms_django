@@ -9,11 +9,14 @@ from phonenumber_field.modelfields import PhoneNumberField
 
 
 class Teacher(models.Model):
+
+    faker = Faker()
+
     first_name = models.CharField(max_length=64, null=False)
     last_name = models.CharField(max_length=84, null=False)
     birth_date = models.DateTimeField(null=False, default=timezone.now)
     age = models.IntegerField(null=False, default=42)
-    email = models.EmailField(null=False, default='email@email.com')
+    email = models.EmailField(null=False, default=faker.email())
     phone_number = PhoneNumberField(null=False, default='+41524204242')
 
     def __str__(self):
