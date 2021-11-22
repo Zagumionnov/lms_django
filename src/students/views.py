@@ -1,13 +1,14 @@
-from django.http import HttpResponse, HttpResponseRedirect
 from django.db.models import Q
+from django.http import HttpResponse, HttpResponseRedirect
+from django.shortcuts import render  # noqa
+from django.views.decorators.csrf import csrf_exempt
+
+from students.forms import StudentCreateForm
 from students.models import Student
 from students.utils import format_list
 
-from students.forms import StudentCreateForm
-
 
 def get_students(request):
-
     students = Student.objects.all().order_by('-id')
 
     params = [
@@ -33,16 +34,16 @@ def get_students(request):
 
     form = '''
     <form action="/students">
-    
+
       <label >First name:</label><br>
       <input type="text" name="first_name" placeholder="Enter first name"><br>
-      
+
       <label >Last name:</label><br>
       <input type="text" name="last_name" placeholder="Enter last name"><br>
-      
+
       <label >Age:</label><br>
       <input type="number" name="age" placeholder=Enter age><br><br>
-      
+
       <input type="submit" value="Submit">
     </form> '''
 
@@ -51,40 +52,31 @@ def get_students(request):
     return HttpResponse(form + result)
 
 
+@csrf_exempt
 def create_student(request):
-
     if request.method == 'POST':
 
-        form = StudentCreateForm(request.GET)
+        form = StudentCreateForm(request.POST)
 
-        form.save()
-
-        first_name = request.GET.get('first_name')
-        last_name = request.GET.get('last_name')
-        age = int(request.GET.get('age'))
-
-        student = Student(
-            first_name=first_name,
-            last_name=last_name,
-            age=age
-        )
-        student.save()
+        if form.is_valid():
+            form.save()
+            return HttpResponseRedirect('/students')
 
         return HttpResponseRedirect('/students')
 
     elif request.method == 'GET':
 
-        html_template = '''
-        <form method='post'>
-          {}
-
-
-          <input type="submit" value="Create">
-        </form> 
-        '''
-
         form = StudentCreateForm()
 
-        result = html_template.format(form.as_p())
+    html_template = '''
+    <form method='post'>
+        {}
 
-        return HttpResponse(result)
+
+        <input type="submit" value="Create">
+    </form>
+    '''
+
+    result = html_template.format(form.as_p())
+
+    return HttpResponse(result)
