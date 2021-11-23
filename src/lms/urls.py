@@ -20,9 +20,9 @@ from django.urls import include, path
 
 from students.views import create_student, get_students, update_student
 
-from teachers.views import create_teacher, get_teachers
+from teachers.views import create_teacher, get_teachers, update_teacher
 
-from groups.views import create_group, get_groups
+from groups.views import create_group, get_groups, update_group
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -33,9 +33,11 @@ urlpatterns = [
 
     path('teachers/', get_teachers),
     path('teachers/create', create_teacher),
+    path('teachers/update/<int:id>', update_teacher),
 
     path('groups/', get_groups),
     path('groups/create', create_group),
+    path('groups/update/<int:id>', update_group),
 ]
 
 if settings.DEBUG:

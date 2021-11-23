@@ -1,5 +1,3 @@
-import re
-
 from django.core.exceptions import ValidationError
 from django.forms import ModelForm
 
@@ -13,19 +11,38 @@ class StudentBaseForm(ModelForm):
         # fields = ['first_name', 'last_name', 'age']
         fields = '__all__'
 
+    def as_div(self):
+        return self._html_output(
+            normal_row='<p%(html_class_attr)s>%(label)s %(field)s%(help_text)s</p>',
+            error_row='%s',
+            row_ender='</p>',
+            help_text_html=' <span class="helptext">%s</span>',
+            errors_on_separate_row=True,
+        )
+
     def clean_phone_number(self):
-        SHORT_LENGTH = 13
+        SHORT_LENGTH = 13  # noqa
+
         phone_number = self.cleaned_data['phone_number']
-
-        pattern = '(\(\d\d\d\) | \+d\d\(\d\d\d\))\d\d\d\-\d\d\d\d'
-
-        if re.match(pattern, phone_number):
-            raise ValidationError('Phone number is not correct')
 
         if len(phone_number) == SHORT_LENGTH:
             phone_number = '+38' + phone_number
 
         return phone_number
+
+    def clean_email(self):
+        email = self.cleaned_data['email']
+
+        existing_emails = []
+        for e in Student.objects.values('email'):
+            existing_emails.append(e["email"])
+        if self.initial:
+            existing_emails.remove(self.initial["email"])
+
+        if email in existing_emails:
+            raise ValidationError(f'{email} - student with this email already exists.')
+
+        return email
 
     def clean(self):
         result = super().clean()

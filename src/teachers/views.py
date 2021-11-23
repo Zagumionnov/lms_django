@@ -3,9 +3,9 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render  # noqa
 from django.views.decorators.csrf import csrf_exempt
 
-from students.utils import format_list
+from teachers.utils import format_list
 
-from teachers.forms import TeacherCreateForm
+from teachers.forms import TeacherCreateForm, TeacherUpdateForm
 from teachers.models import Teacher
 
 
@@ -76,6 +76,41 @@ def create_teacher(request):
             <input type="submit" value="Create">
         </form>
         '''
+
+    result = html_template.format(form.as_p())
+
+    return HttpResponse(result)
+
+@csrf_exempt
+def update_teacher(request, id):
+
+    teacher = Teacher.objects.get(id=id)
+
+    if request.method == 'POST':
+
+        form = TeacherUpdateForm(
+            data=request.POST,
+            instance=teacher
+        )
+
+        if form.is_valid():
+            form.save()
+            return HttpResponseRedirect('/teachers')
+
+        return HttpResponseRedirect('/teachers')
+
+    elif request.method == 'GET':
+
+        form = TeacherUpdateForm(instance=teacher)
+
+    html_template = '''
+    <form method='post'>
+        {}
+
+
+        <input type="submit" value="Update">
+    </form>
+    '''
 
     result = html_template.format(form.as_p())
 

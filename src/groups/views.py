@@ -3,10 +3,10 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render  # noqa
 from django.views.decorators.csrf import csrf_exempt
 
-from groups.forms import GroupCreateForm
+from groups.forms import GroupCreateForm, GroupUpdateForm
 from groups.models import Group
 
-from students.utils import format_list
+from groups.utils import format_list
 
 
 def get_groups(request):
@@ -71,3 +71,40 @@ def create_group(request):
     result = html_template.format(form.as_p())
 
     return HttpResponse(result)
+
+
+@csrf_exempt
+def update_group(request, id):
+
+    group = Group.objects.get(id=id)
+
+    if request.method == 'POST':
+
+        form = GroupUpdateForm(
+            data=request.POST,
+            instance=group
+        )
+
+        if form.is_valid():
+            form.save()
+            return HttpResponseRedirect('/groups')
+
+        return HttpResponseRedirect('/groups')
+
+    elif request.method == 'GET':
+
+        form = GroupUpdateForm(instance=group)
+
+    html_template = '''
+    <form method='post'>
+        {}
+
+
+        <input type="submit" value="Update">
+    </form>
+    '''
+
+    result = html_template.format(form.as_p())
+
+    return HttpResponse(result)
+
