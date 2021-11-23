@@ -1,8 +1,8 @@
 from django.core.management.base import BaseCommand, CommandError
 
-from teachers.models import Teacher
-
 from faker import Faker
+
+from teachers.models import Teacher
 
 
 class Command(BaseCommand):

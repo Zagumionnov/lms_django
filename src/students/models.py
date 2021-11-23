@@ -1,3 +1,4 @@
+import datetime
 import random
 
 from django.db import models
@@ -10,8 +11,18 @@ class Student(models.Model):
     last_name = models.CharField(max_length=84, null=False)
     age = models.IntegerField(null=False, default=42)
 
+    email = models.EmailField(max_length=64)
+    phone_number = models.CharField(null=False, max_length=20)
+
+    enroll_date = models.DateField(default=datetime.date.today)
+    graduate_date = models.DateField(default=datetime.date.today())
+
     def __str__(self):
-        return f'{self.first_name}, {self.last_name}, {self.age}'
+        return f'{self.first_name},' \
+               f'{self.last_name},' \
+               f'{self.email},' \
+               f'{self.phone_number},' \
+               f'{self.age}'
 
     @classmethod
     def generate_students(cls, count):

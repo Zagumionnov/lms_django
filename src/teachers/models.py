@@ -20,7 +20,8 @@ class Teacher(models.Model):
     phone_number = PhoneNumberField(null=False, default='+41524204242')
 
     def __str__(self):
-        return f'{self.first_name}, {self.last_name}, {self.birth_date}, {self.age}, {self.email}, {self.phone_number}'
+        return f'{self.first_name}, {self.last_name}, {str(self.birth_date)[0:11]},\
+                 {self.age}, {self.email}, {self.phone_number}'
 
     @classmethod
     def generate_teachers(cls, count):
