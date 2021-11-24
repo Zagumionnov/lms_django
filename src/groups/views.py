@@ -53,8 +53,6 @@ def create_group(request):
             form.save()
             return HttpResponseRedirect('/groups')
 
-        return HttpResponseRedirect('/groups')
-
     elif request.method == 'GET':
 
         form = GroupCreateForm()

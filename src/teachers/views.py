@@ -63,8 +63,6 @@ def create_teacher(request):
             form.save()
             return HttpResponseRedirect('/teachers')
 
-        return HttpResponseRedirect('/teachers')
-
     elif request.method == 'GET':
 
         form = TeacherCreateForm()

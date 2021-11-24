@@ -30,18 +30,26 @@ class TeacherBaseForm(ModelForm):
         return phone_number
 
     def clean_email(self):
+
         email = self.cleaned_data['email']
 
-        existing_emails = []
-        for e in Teacher.objects.values('email'):
-            existing_emails.append(e["email"])
-        if self.initial:
-            existing_emails.remove(self.initial["email"])
+        exists_students = Teacher.objects.filter(email=email).exclude(id=self.instance.id).exists()
 
-        if email in existing_emails:
-            raise ValidationError(f'{email} - teacher with this email already exists.')
+        if exists_students:
+            raise ValidationError('Email is not unique!')
 
         return email
+
+        # email = self.cleaned_data['email']
+        #
+        # existing_emails = []
+        # for e in Teacher.objects.values('email'):
+        #     existing_emails.append(e["email"])
+        # if self.initial:
+        #     existing_emails.remove(self.initial["email"])
+        #
+        # if email in existing_emails:
+        #     raise ValidationError(f'{email} - teacher with this email already exists.')
 
 
 class TeacherCreateForm(TeacherBaseForm):

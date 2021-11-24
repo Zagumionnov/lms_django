@@ -1,3 +1,5 @@
+import re
+
 from django.core.exceptions import ValidationError
 from django.forms import ModelForm
 
@@ -24,6 +26,11 @@ class StudentBaseForm(ModelForm):
         SHORT_LENGTH = 13  # noqa
 
         phone_number = self.cleaned_data['phone_number']
+
+        pattern = '(\(\d\d\d\)|\+\d\d\(\d\d\d\))\d\d\d\-\d\d\d\d' # noqa
+
+        if not re.match(pattern, phone_number):
+            raise ValidationError('Phone number is not correct')
 
         if len(phone_number) == SHORT_LENGTH:
             phone_number = '+38' + phone_number

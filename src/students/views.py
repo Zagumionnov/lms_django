@@ -98,8 +98,6 @@ def update_student(request, id):
             form.save()
             return HttpResponseRedirect('/students')
 
-        return HttpResponseRedirect('/students')
-
     elif request.method == 'GET':
 
         form = StudentUpdateForm(instance=student)
