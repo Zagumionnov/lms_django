@@ -1,56 +1,27 @@
-from django.db.models import Q
+
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render  # noqa
 from django.views.decorators.csrf import csrf_exempt
+from django.urls import reverse
 
-from teachers.utils import format_list
 
-from teachers.forms import TeacherCreateForm, TeacherUpdateForm
+from teachers.forms import TeacherCreateForm, TeacherUpdateForm, TeacherFilter
 from teachers.models import Teacher
 
 
+@csrf_exempt
 def get_teachers(request):
-    teachers = Teacher.objects.all().order_by('-id')
 
-    params = [
-        'first_name',
-        'first_name__startswith',
-        'first_name__endswith',
-        'last_name',
-        'age',
-        'age__g',
-        'email',
-    ]
+    filter = TeacherFilter(
+        data=request.GET,
+        queryset=Teacher.objects.all().order_by('-id')
+    )
 
-    for param_name in params:
-        param_value = request.GET.get(param_name)
-        if param_value:
-            param_elems = param_value.split(',')
-            if param_elems:
-                or_filter = Q()
-                for param_elem in param_elems:
-                    or_filter |= Q(**{param_name: param_elem})
-                teachers = teachers.filter(or_filter)
-            else:
-                teachers = teachers.filter(**{param_name: param_value})
-
-    form = '''
-    <form action="/teachers">
-      <label >First name:</label><br>
-      <input type="text" name="first_name" placeholder="First name"><br>
-      <label >Last name:</label><br>
-      <input type="text" name="last_name" placeholder="Last name"><br>
-      <label >Age:</label><br>
-      <input type="number" name="age" placeholder="Age"><br>
-      <label >email:</label><br>
-      <input type="email" name="email" placeholder="Email"><br><br>
-      <input type="submit" value="Submit">
-    </form>
-    '''
-
-    result = format_list(teachers)
-
-    return HttpResponse(form + result)
+    return render(
+        request=request,
+        template_name='teachers-list.html',
+        context={'filter': filter}
+    )
 
 
 @csrf_exempt
@@ -61,23 +32,17 @@ def create_teacher(request):
 
         if form.is_valid:
             form.save()
-            return HttpResponseRedirect('/teachers')
+            return HttpResponseRedirect(reverse('list_teacher'))
 
-    elif request.method == 'GET':
+    else:
 
         form = TeacherCreateForm()
 
-    html_template = '''
-        <form method="post">
-            {}
-
-            <input type="submit" value="Create">
-        </form>
-        '''
-
-    result = html_template.format(form.as_p())
-
-    return HttpResponse(result)
+    return render(
+        request=request,
+        template_name='teachers-create.html',
+        context={'form': form}
+    )
 
 @csrf_exempt
 def update_teacher(request, id):
@@ -93,23 +58,14 @@ def update_teacher(request, id):
 
         if form.is_valid():
             form.save()
-            return HttpResponseRedirect('/teachers')
+            return HttpResponseRedirect(reverse('list_teacher'))
 
-        return HttpResponseRedirect('/teachers')
-
-    elif request.method == 'GET':
+    else:
 
         form = TeacherUpdateForm(instance=teacher)
 
-    html_template = '''
-    <form method='post'>
-        {}
-
-
-        <input type="submit" value="Update">
-    </form>
-    '''
-
-    result = html_template.format(form.as_p())
-
-    return HttpResponse(result)
+    return render(
+        request=request,
+        template_name='students-update.html',
+        context={'form': form}
+    )

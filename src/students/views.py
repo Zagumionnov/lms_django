@@ -8,35 +8,21 @@ from students.forms import StudentCreateForm, StudentUpdateForm
 from students.models import Student
 from students.utils import format_list
 
+from students.forms import StudentFilter
+
+
 @csrf_exempt
 def get_students(request):
-    students = Student.objects.all().order_by('-id')
 
-    params = [
-        'first_name',
-        'first_name__startswith',
-        'first_name__endswith',
-        'last_name',
-        'age',
-        'age__g'
-    ]
-
-    for param_name in params:
-        param_value = request.GET.get(param_name)
-        if param_value:
-            param_elems = param_value.split(',')
-            if param_elems:
-                or_filter = Q()
-                for param_elem in param_elems:
-                    or_filter |= Q(**{param_name: param_elem})
-                students = students.filter(or_filter)
-            else:
-                students = students.filter(**{param_name: param_value})
+    filter = StudentFilter(
+        data=request.GET,
+        queryset=Student.objects.all().order_by('-id')
+    )
 
     return render(
         request=request,
         template_name='students-list.html',
-        context={'students': students}
+        context={'filter': filter}
     )
 
 

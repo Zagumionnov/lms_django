@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    <h1> Find group </h1>
+{% endblock %}
+
+{% block main %}
+    <form method='get'>
+        {{ filter.form.as_p }}
+      <input type="submit" value="Search">
+    </form>
+
+    {% for group in filter.qs %}
+        <p>
+            <a href="{% url 'update_group' group.id %}">UPDATE</a> <!-- reverse('update', args=[1])-->
+            <a href=/groups/delete/{{group.id}}>DELETE</a>
+            {{ group }}
+        </p>
+    {% endfor %}
+
+{% endblock %}
+

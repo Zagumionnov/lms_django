@@ -1,7 +1,14 @@
 from django.core.exceptions import ValidationError
 from django.forms import ModelForm
 
+import django_filters
 from teachers.models import Teacher
+
+
+class TeacherFilter(django_filters.FilterSet):
+    class Meta:
+        model = Teacher
+        fields = '__all__'
 
 
 class TeacherBaseForm(ModelForm):
@@ -19,16 +26,6 @@ class TeacherBaseForm(ModelForm):
             errors_on_separate_row=True,
         )
 
-    def clean_phone_number(self):
-        SHORT_LENGTH = 13  # noqa
-
-        phone_number = self.cleaned_data['phone_number']
-
-        if len(phone_number) == SHORT_LENGTH:
-            phone_number = '+38' + phone_number
-
-        return phone_number
-
     def clean_email(self):
 
         email = self.cleaned_data['email']
@@ -39,17 +36,6 @@ class TeacherBaseForm(ModelForm):
             raise ValidationError('Email is not unique!')
 
         return email
-
-        # email = self.cleaned_data['email']
-        #
-        # existing_emails = []
-        # for e in Teacher.objects.values('email'):
-        #     existing_emails.append(e["email"])
-        # if self.initial:
-        #     existing_emails.remove(self.initial["email"])
-        #
-        # if email in existing_emails:
-        #     raise ValidationError(f'{email} - teacher with this email already exists.')
 
 
 class TeacherCreateForm(TeacherBaseForm):

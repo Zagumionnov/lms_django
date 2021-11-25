@@ -1,20 +1,16 @@
 {% extends 'base.html' %}
 
+{% block title %}
+    <h1> Find student </h1>
+{% endblock %}
+
 {% block main %}
     <form method='get'>
-      <label >First name:</label><br>
-      <input type="text" name="first_name" placeholder="Enter first name"><br>
-
-      <label >Last name:</label><br>
-      <input type="text" name="last_name" placeholder="Enter last name"><br>
-
-      <label >Age:</label><br>
-      <input type="number" name="age" placeholder=Enter age><br><br>
-
+        {{ filter.form.as_p }}
       <input type="submit" value="Search">
     </form>
 
-    {% for student in students %}
+    {% for student in filter.qs %}
         <p>
             <a href="{% url 'update' student.id %}">UPDATE</a> <!-- reverse('update', args=[1])-->
             <a href=/students/delete/{{student.id}}>DELETE</a>

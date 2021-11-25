@@ -7,6 +7,8 @@ from faker import Faker
 
 from phonenumber_field.modelfields import PhoneNumberField
 
+from core.validators import validate_email_for_prohibited_domain, validate_phone
+
 
 class Teacher(models.Model):
 
@@ -16,8 +18,10 @@ class Teacher(models.Model):
     last_name = models.CharField(max_length=84, null=False)
     birth_date = models.DateTimeField(null=False, default=timezone.now)
     age = models.IntegerField(null=False, default=42)
-    email = models.EmailField(null=False, default=faker.email())
-    phone_number = PhoneNumberField(null=False, default='+41524204242')
+    email = models.EmailField(null=False, default=faker.email(), validators=[
+        validate_email_for_prohibited_domain,
+    ])
+    phone_number = models.CharField(null=False, max_length=20, validators=[validate_phone])
 
     def __str__(self):
         return f'{self.first_name}, {self.last_name}, {str(self.birth_date)[0:11]},\

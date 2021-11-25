@@ -4,6 +4,7 @@ decorator==5.1.0
 Django==3.2.9
 django-debug-toolbar==3.2.2
 django-extensions==3.1.5
+django-filter==21.1
 django-phonenumber-field==6.0.0
 Faker==9.8.2
 flake8==4.0.1

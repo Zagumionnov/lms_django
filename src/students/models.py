@@ -6,7 +6,7 @@ from django.core.validators import MinValueValidator, MaxValueValidator
 
 from faker import Faker
 
-from core.validators import validate_email_for_prohibited_domain
+from core.validators import validate_email_for_prohibited_domain, validate_phone
 
 
 class Student(models.Model):
@@ -18,7 +18,7 @@ class Student(models.Model):
     ])
 
     email = models.EmailField(max_length=64, validators=[validate_email_for_prohibited_domain])
-    phone_number = models.CharField(null=False, max_length=20)
+    phone_number = models.CharField(null=False, max_length=20, validators=[validate_phone])
 
     enroll_date = models.DateField(default=datetime.date.today)
     graduate_date = models.DateField(default=datetime.date.today())
