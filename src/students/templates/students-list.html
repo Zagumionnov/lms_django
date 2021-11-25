@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+
+{% block main %}
+    <form method='get'>
+      <label >First name:</label><br>
+      <input type="text" name="first_name" placeholder="Enter first name"><br>
+
+      <label >Last name:</label><br>
+      <input type="text" name="last_name" placeholder="Enter last name"><br>
+
+      <label >Age:</label><br>
+      <input type="number" name="age" placeholder=Enter age><br><br>
+
+      <input type="submit" value="Search">
+    </form>
+
+    {% for student in students %}
+        <p>
+            <a href="{% url 'update' student.id %}">UPDATE</a> <!-- reverse('update', args=[1])-->
+            <a href=/students/delete/{{student.id}}>DELETE</a>
+            {{ student }}
+        </p>
+    {% endfor %}
+
+{% endblock %}
+
+

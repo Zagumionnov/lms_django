@@ -2,16 +2,22 @@ import datetime
 import random
 
 from django.db import models
+from django.core.validators import MinValueValidator, MaxValueValidator
 
 from faker import Faker
+
+from core.validators import validate_email_for_prohibited_domain
 
 
 class Student(models.Model):
     first_name = models.CharField(max_length=64, null=False)
     last_name = models.CharField(max_length=84, null=False)
-    age = models.IntegerField(null=False, default=42)
+    age = models.IntegerField(null=False, default=42, validators=[
+        MinValueValidator(10),
+        MaxValueValidator(100)
+    ])
 
-    email = models.EmailField(max_length=64)
+    email = models.EmailField(max_length=64, validators=[validate_email_for_prohibited_domain])
     phone_number = models.CharField(null=False, max_length=20)
 
     enroll_date = models.DateField(default=datetime.date.today)
