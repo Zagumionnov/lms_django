@@ -20,7 +20,6 @@ pep8-naming==0.12.1
 pexpect==4.8.0
 phonenumberslite==8.12.37
 pickleshare==0.7.5
-pkg_resources==0.0.0
 prompt-toolkit==3.0.22
 ptyprocess==0.7.0
 pycodestyle==2.8.0
