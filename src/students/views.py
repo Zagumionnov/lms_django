@@ -1,6 +1,6 @@
 from django.db.models import Q
 from django.http import HttpResponse, HttpResponseRedirect
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 from django.views.decorators.csrf import csrf_exempt
 from django.urls import reverse
 
@@ -50,7 +50,7 @@ def create_student(request):
 @csrf_exempt
 def update_student(request, id):
 
-    student = Student.objects.get(id=id)
+    student = get_object_or_404(Student, id=id)
 
     if request.method == 'POST':
 
@@ -71,4 +71,20 @@ def update_student(request, id):
         request=request,
         template_name='students-update.html',
         context={'form': form}
+    )
+
+
+@csrf_exempt
+def delete_student(request, id):
+
+    student = get_object_or_404(Student, id=id)
+
+    if request.method == 'POST':
+        student.delete()
+        return HttpResponseRedirect(reverse('list'))
+
+    return render(
+        request=request,
+        template_name='students-delete.html',
+        context={'student': student}
     )

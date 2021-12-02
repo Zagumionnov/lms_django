@@ -19,6 +19,7 @@ class Student(models.Model):
 
     email = models.EmailField(max_length=64, validators=[validate_email_for_prohibited_domain])
     phone_number = models.CharField(null=False, max_length=20, validators=[validate_phone])
+    inn = models.PositiveIntegerField(unique=True, null=True)
 
     enroll_date = models.DateField(default=datetime.date.today)
     graduate_date = models.DateField(default=datetime.date.today())
@@ -28,7 +29,8 @@ class Student(models.Model):
                f'{self.last_name},' \
                f'{self.email},' \
                f'{self.phone_number},' \
-               f'{self.age}'
+               f'{self.age},' \
+               f'{self.inn},' \
 
     @classmethod
     def generate_students(cls, count):
