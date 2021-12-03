@@ -18,13 +18,14 @@ from django.conf import settings
 from django.urls import include, path
 
 
-from teachers.views import create_teacher, get_teachers, update_teacher
+from teachers.views import create_teacher, get_teachers, update_teacher, delete_teacher
 
 urlpatterns = [
 
     path('', get_teachers, name='list_teacher'),
     path('create', create_teacher, name='create_teacher'),
     path('update/<int:id>', update_teacher, name='update_teacher'),
+    path('delete/<int:id>', delete_teacher, name='delete_teacher'),
 
 ]
 

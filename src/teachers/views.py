@@ -1,6 +1,6 @@
 
 from django.http import HttpResponse, HttpResponseRedirect
-from django.shortcuts import render  # noqa
+from django.shortcuts import render, get_object_or_404  # noqa
 from django.views.decorators.csrf import csrf_exempt
 from django.urls import reverse
 
@@ -47,7 +47,7 @@ def create_teacher(request):
 @csrf_exempt
 def update_teacher(request, id):
 
-    teacher = Teacher.objects.get(id=id)
+    teacher = get_object_or_404(Teacher, id=id)
 
     if request.method == 'POST':
 
@@ -66,6 +66,21 @@ def update_teacher(request, id):
 
     return render(
         request=request,
-        template_name='students-update.html',
+        template_name='teachers-update.html',
         context={'form': form}
+    )
+
+@csrf_exempt
+def delete_teacher(request, id):
+
+    teacher = get_object_or_404(Teacher, id=id)
+
+    if request.method == 'POST':
+        teacher.delete()
+        return HttpResponseRedirect(reverse('list_teacher'))
+
+    return render(
+        request=request,
+        template_name='teachers-delete.html',
+        context={'teacher': teacher}
     )

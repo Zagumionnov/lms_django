@@ -18,14 +18,14 @@ from django.conf import settings
 from django.urls import include, path
 
 
-from groups.views import create_group, get_groups, update_group
+from groups.views import create_group, get_groups, update_group, delete_group
 
 urlpatterns = [
 
     path('', get_groups, name='list_group'),
     path('create', create_group, name='create_group'),
     path('update/<int:id>', update_group, name='update_group'),
-
+    path('delete/<int:id>', delete_group, name='delete_group'),
 ]
 
 if settings.DEBUG:

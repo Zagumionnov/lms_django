@@ -1,5 +1,5 @@
 from django.http import HttpResponseRedirect
-from django.shortcuts import render  # noqa
+from django.shortcuts import render, get_object_or_404  # noqa
 from django.urls import reverse
 from django.views.decorators.csrf import csrf_exempt
 from groups.forms import GroupCreateForm, GroupUpdateForm, GroupFilter
@@ -63,3 +63,19 @@ def update_group(request, id):
             template_name='groups-update.html',
             context={'form': form}
         )
+
+
+@csrf_exempt
+def delete_group(request, id):
+
+    group = get_object_or_404(Group, id=id)
+
+    if request.method == 'POST':
+        group.delete()
+        return HttpResponseRedirect(reverse('list_group'))
+
+    return render(
+        request=request,
+        template_name='groups-delete.html',
+        context={'group': group}
+    )

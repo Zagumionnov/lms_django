@@ -1,16 +1,16 @@
 {% extends 'base.html' %}
 
 {% block title %}
-    <h1> Delete student </h1>
+    <h1> Delete group </h1>
 {% endblock %}
 
 {% block main %}
 
     <form method='post'>
-        <h3>Do you really want to delete {{ student.first_name }} {{ student.last_name }}?</h3>
+        <h3>Do you really want to delete {{ group.group_name }}?</h3>
 
         <input type="submit" class="btn btn-danger" value="Delete">
-        <a href="{% url 'list' %}"  class="btn btn-secondary">Cancel</a>
+        <a href="{% url 'list_group' %}" class="btn btn-secondary">Cancel</a>
     </form>
 
 {% endblock %}
