@@ -2,6 +2,7 @@ asgiref==3.4.1
 backcall==0.2.0
 decorator==5.1.0
 Django==3.2.9
+django-crispy-forms==1.13.0
 django-debug-toolbar==3.2.2
 django-extensions==3.1.5
 django-filter==21.1
@@ -20,6 +21,7 @@ pep8-naming==0.12.1
 pexpect==4.8.0
 phonenumberslite==8.12.37
 pickleshare==0.7.5
+pkg_resources==0.0.0
 prompt-toolkit==3.0.22
 ptyprocess==0.7.0
 pycodestyle==2.8.0

@@ -1,4 +1,5 @@
 {% extends 'base.html' %}
+{% load crispy_forms_tags %}
 
 {% block title %}
     <h1> Find group </h1>
@@ -6,7 +7,7 @@
 
 {% block main %}
     <form method='get'>
-        {{ filter.form.as_p }}
+        {{ filter.form|crispy }}
       <input type="submit" class="btn btn-secondary" value="Search">
     </form>
 
