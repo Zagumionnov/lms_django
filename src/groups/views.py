@@ -19,7 +19,6 @@ def get_groups(request):
     )
 
 
-@csrf_exempt
 def create_group(request):
     if request.method == 'POST':
         form = GroupCreateForm(request.POST)
@@ -39,9 +38,8 @@ def create_group(request):
     )
 
 
-@csrf_exempt
 def update_group(request, id):
-    group = Group.objects.get(id=id)
+    group = get_object_or_404(Group, id=id)
 
     if request.method == 'POST':
 
@@ -58,14 +56,18 @@ def update_group(request, id):
 
         form = GroupUpdateForm(instance=group)
 
-        return render(
-            request=request,
-            template_name='groups-update.html',
-            context={'form': form}
+    return render(
+        request=request,
+        template_name='groups-update.html',
+        context={
+            'form': form,
+            'group': group,
+            'students': group.students.all(),
+            'teachers': group.teachers.all()
+                 }
         )
 
 
-@csrf_exempt
 def delete_group(request, id):
 
     group = get_object_or_404(Group, id=id)

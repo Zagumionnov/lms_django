@@ -9,6 +9,8 @@ from phonenumber_field.modelfields import PhoneNumberField
 
 from core.validators import validate_email_for_prohibited_domain, validate_phone
 
+from groups.models import Group
+
 
 class Teacher(models.Model):
 
@@ -23,9 +25,16 @@ class Teacher(models.Model):
     ])
     phone_number = models.CharField(null=False, max_length=20, validators=[validate_phone])
 
+    group = models.ForeignKey(
+        to=Group,
+        null=True,
+        on_delete=models.SET_NULL,
+        related_name='teachers'
+    )
+
     def __str__(self):
         return f'{self.first_name}, {self.last_name}, {str(self.birth_date)[0:11]},\
-                 {self.age}, {self.email}, {self.phone_number}'
+                 {self.age}, {self.email}, {self.phone_number}, {self.group}'
 
     @classmethod
     def generate_teachers(cls, count):

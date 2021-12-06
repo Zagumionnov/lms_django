@@ -8,6 +8,8 @@ from faker import Faker
 
 from core.validators import validate_email_for_prohibited_domain, validate_phone
 
+from groups.models import Group
+
 
 class Student(models.Model):
     first_name = models.CharField(max_length=64, null=False)
@@ -24,6 +26,13 @@ class Student(models.Model):
     enroll_date = models.DateField(default=datetime.date.today)
     graduate_date = models.DateField(default=datetime.date.today())
 
+    group = models.ForeignKey(
+        to=Group,
+        null=True,
+        on_delete=models.SET_NULL,
+        related_name='students'
+    )
+
     def __str__(self):
         return f'{self.first_name},' \
                f'{self.last_name},' \
@@ -31,6 +40,8 @@ class Student(models.Model):
                f'{self.phone_number},' \
                f'{self.age},' \
                f'{self.inn},' \
+               f'{self.group},' \
+
 
     @classmethod
     def generate_students(cls, count):

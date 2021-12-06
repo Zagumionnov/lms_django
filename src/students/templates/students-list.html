@@ -25,6 +25,7 @@
         <th>Phone</th>
         <th>Age</th>
         <th>Inn</th>
+        <th>Group</th>
         <th>✎</th>
         <th>🗑</th>
       </tr>
@@ -37,6 +38,7 @@
                 <td>{{ student.phone_number }}</td>
                 <td>{{ student.age }}</td>
                 <td>{{ student.inn }}</td>
+                <td>{{ student.group }}</td>
                 <td><a href="{% url 'update' student.id %}">UPDATE</a></td>
                 <td><a href="{% url 'delete' student.id %}">DELETE</a></td>
               </tr>

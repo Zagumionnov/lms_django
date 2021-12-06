@@ -7,4 +7,4 @@ class Group(models.Model):
     num_year = models.IntegerField(null=False, default=1)
 
     def __str__(self):
-        return f'{self.group_name}, {self.num_year}'
+        return f'{self.group_name}'

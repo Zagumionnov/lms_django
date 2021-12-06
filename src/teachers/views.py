@@ -9,7 +9,6 @@ from teachers.forms import TeacherCreateForm, TeacherUpdateForm, TeacherFilter
 from teachers.models import Teacher
 
 
-@csrf_exempt
 def get_teachers(request):
 
     filter = TeacherFilter(
@@ -24,7 +23,6 @@ def get_teachers(request):
     )
 
 
-@csrf_exempt
 def create_teacher(request):
     if request.method == 'POST':
 
@@ -44,7 +42,7 @@ def create_teacher(request):
         context={'form': form}
     )
 
-@csrf_exempt
+
 def update_teacher(request, id):
 
     teacher = get_object_or_404(Teacher, id=id)
@@ -70,7 +68,7 @@ def update_teacher(request, id):
         context={'form': form}
     )
 
-@csrf_exempt
+
 def delete_teacher(request, id):
 
     teacher = get_object_or_404(Teacher, id=id)

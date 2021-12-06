@@ -8,6 +8,7 @@
 {% block main %}
 
     <form method='post'>
+        {% csrf_token %}
         <h3>Do you really want to delete {{ group.group_name }}?</h3>
 
         <input type="submit" class="btn btn-danger" value="Delete">
