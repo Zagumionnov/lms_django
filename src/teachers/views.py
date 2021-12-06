@@ -13,7 +13,7 @@ def get_teachers(request):
 
     filter = TeacherFilter(
         data=request.GET,
-        queryset=Teacher.objects.all().order_by('-id')
+        queryset=Teacher.objects.all().select_related('group').order_by('-id')
     )
 
     return render(
