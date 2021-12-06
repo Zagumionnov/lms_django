@@ -15,7 +15,7 @@ def get_students(request):
 
     filter = StudentFilter(
         data=request.GET,
-        queryset=Student.objects.all().select_related('group').order_by('-id')
+        queryset=Student.objects.all().select_related('group', 'headed_group').order_by('-id')
     )
 
     return render(

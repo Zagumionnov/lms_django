@@ -17,6 +17,7 @@
       <tr>
         <th>Group name</th>
         <th>Number of year</th>
+        <th>Headman</th>
         <th>✎</th>
         <th>🗑</th>
       </tr>
@@ -25,6 +26,7 @@
               <tr>
                 <td>{{ group.group_name }}</td>
                 <td>{{ group.num_year }}</td>
+                <td>{{ group.headman }}</td>
                 <td><a href="{% url 'update_group' group.id %}">UPDATE</a></td>
                 <td><a href="{% url 'delete_group' group.id %}">DELETE</a></td>
               </tr>
