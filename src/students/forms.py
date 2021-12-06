@@ -10,7 +10,11 @@ from students.models import Student
 class StudentFilter(django_filters.FilterSet):
     class Meta:
         model = Student
-        fields = '__all__'
+        fields = {
+            'age': ['lt', 'gt'],
+            'first_name': ['exact', 'icontains'],
+            'last_name': ['exact', 'startswith'],
+        }
 
 
 class StudentBaseForm(ModelForm):

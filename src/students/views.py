@@ -11,7 +11,6 @@ from students.utils import format_list
 from students.forms import StudentFilter
 
 
-@csrf_exempt
 def get_students(request):
 
     filter = StudentFilter(
@@ -26,7 +25,6 @@ def get_students(request):
     )
 
 
-@csrf_exempt
 def create_student(request):
     if request.method == 'POST':
 
@@ -47,7 +45,6 @@ def create_student(request):
     )
 
 
-@csrf_exempt
 def update_student(request, id):
 
     student = get_object_or_404(Student, id=id)
@@ -74,7 +71,6 @@ def update_student(request, id):
     )
 
 
-@csrf_exempt
 def delete_student(request, id):
 
     student = get_object_or_404(Student, id=id)
